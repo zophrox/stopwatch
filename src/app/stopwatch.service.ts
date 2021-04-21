@@ -8,8 +8,7 @@ export class StopwatchService {
     flag = new Subject<boolean>()
 
 startStop:boolean = false
-passedTime:number
-startTime:number
+
 subscriptionStart:Subscription
   constructor() {
     
@@ -21,16 +20,28 @@ subscriptionStart:Subscription
 
 startsTimer(){
     this.flag.next(false) 
-    this.startStop=!this.startStop
-    if(this.startStop){
-        this.startTime = Date.now()
-        this.subscriptionStart = interval(100).subscribe(()=>{
-        this.passedTime =  Date.now() - this.startTime - 3600000*3
-            this.time.next(this.passedTime)
-        })} else{
-            this.subscriptionStart.unsubscribe()
-        }
+    this.startStop=true
+    
+    
+    let startTime = Date.now()
+    
+    this.subscriptionStart = interval(100).subscribe(()=>{
+        let passedTime =  Date.now() - startTime - 3600000*3
+            this.time.next(passedTime)
+        }) 
 }
+// startsTimer(){
+//     this.flag.next(false) 
+//     this.startStop=!this.startStop
+//     if(this.startStop){
+//         let startTime = Date.now()
+//         this.subscriptionStart = interval(100).subscribe(()=>{
+//         let passedTime =  Date.now() - startTime - 3600000*3
+//             this.time.next(passedTime)
+//         })} else{
+//             this.subscriptionStart.unsubscribe()
+//         }
+// }
 
 
 stopTimer(){

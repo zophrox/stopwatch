@@ -1,6 +1,6 @@
 <ul id="buttons">
-    <li><button mat-raised-button color="accent" (click)="startTimer()">Start/Stop</button></li>
-    <li><button mat-raised-button color="accent" (click)="stopTimer()">Stop</button></li>
+    <li><button mat-raised-button color="accent" disabled="{{disabled}}" (click)="startTimer()" >Start</button></li>
+    <li><button mat-raised-button color="accent" id="wait">Wait</button></li>
     <li><button mat-raised-button color="accent"(click)="resetTimer()">Reset</button></li>
 </ul>
 

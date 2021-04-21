@@ -9,11 +9,7 @@ import { StopwatchService } from '../stopwatch.service';
   styleUrls: ['./timer.component.scss']
 })
 export class TimerComponent implements OnInit{
-  // hr:string = '00';
-  // min:string = '00';
-  // sec:string = '00';
-  // mlsec:string= '00';
- // interval:any
+
   time:Date
   flag:boolean = true
 constructor(private stopWatchService:StopwatchService) {
