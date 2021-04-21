@@ -1,57 +1,38 @@
 import { Injectable } from '@angular/core';
-import { interval, Subject,  Subscription } from 'rxjs';
-
+import { interval, Subject, Subscription } from 'rxjs';
 
 @Injectable()
 export class StopwatchService {
-    time = new Subject<number>()
-    flag = new Subject<boolean>()
+  time = new Subject<number>();
+  flag = new Subject<boolean>();
 
-startStop:boolean = false
+  memoryTime: number = 0;
+  passedTime: number;
 
-subscriptionStart:Subscription
-  constructor() {
-    
-   }
+  subscriptionStart$: Subscription;
+  constructor() {}
 
-  ngOnInit() {
-   
-}
+  ngOnInit() {}
 
-startsTimer(){
-    this.flag.next(false) 
-    this.startStop=true
-    
-    
-    let startTime = Date.now()
-    
-    this.subscriptionStart = interval(100).subscribe(()=>{
-        let passedTime =  Date.now() - startTime - 3600000*3
-            this.time.next(passedTime)
-        }) 
-}
-// startsTimer(){
-//     this.flag.next(false) 
-//     this.startStop=!this.startStop
-//     if(this.startStop){
-//         let startTime = Date.now()
-//         this.subscriptionStart = interval(100).subscribe(()=>{
-//         let passedTime =  Date.now() - startTime - 3600000*3
-//             this.time.next(passedTime)
-//         })} else{
-//             this.subscriptionStart.unsubscribe()
-//         }
-// }
+  startsTimer() {
+    this.flag.next(false);
 
+    let startTime = Date.now();
 
-stopTimer(){
-    this.startStop=false
-    this.subscriptionStart.unsubscribe()
+    this.subscriptionStart$ = interval(100).subscribe(() => {
+      this.passedTime =
+        this.memoryTime + (Date.now() - startTime - 3600000 * 3);
+      this.time.next(this.passedTime);
+    });
+  }
 
-}
-resetTimer(){
-    this.startStop=false
-    this.subscriptionStart.unsubscribe()
-    this.time.next(-3600000*3)
-}
+  stopTimer() {
+    this.memoryTime = this.passedTime + 3600000 * 3;
+    this.subscriptionStart$.unsubscribe();
+  }
+  resetTimer() {
+    this.subscriptionStart$.unsubscribe();
+    this.time.next(-3600000 * 3);
+    this.memoryTime=0
+  }
 }
